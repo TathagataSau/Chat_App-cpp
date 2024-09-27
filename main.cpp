@@ -49,7 +49,7 @@ int main() {
 
 	//convert the ipaddress(0.0.0.0) put it insise sin_family in binary format
 	if (InetPton(AF_INET, _T("0.0.0.0"), &serveraddr.sin_addr) != 1) {
-		cout << "setting address structure failed" << endl;
+		cout << "setting address structure failed!!" << endl;
 		closesocket(listenSocket);
 		WSACleanup();
 		return 1;
