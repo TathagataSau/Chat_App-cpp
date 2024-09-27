@@ -2,6 +2,7 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <tchar.h>
+#include <thread>
 
 using namespace std;
 #pragma comment(lib, "ws2_32.lib")
@@ -21,6 +22,52 @@ bool Initialize() {
 	WSADATA data;
 	return WSAStartup(MAKEWORD(2, 2), &data) == 0;
 }
+
+
+void InteractWithClient(SOCKET clientSocket, vector<SOCKET> &clients) {
+	// Send/Receive data from client
+	cout << "Client connected!" << endl;
+
+	char buffer[4096];  // Buffer to hold received data
+
+	// Keep receiving data from the client
+	while (1) {
+		int bytesrecvd = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);  // Reserve space for null-terminator
+
+		// Error handling
+		if (bytesrecvd == SOCKET_ERROR) {
+			cout << "Error in receiving data!!" << endl;
+			break;
+		}
+
+		// Client disconnected gracefully
+		if (bytesrecvd <= 0) {
+			cout << "Client disconnected!" << endl;
+			break;
+		}
+
+		// Null-terminate the received data and print it
+		buffer[bytesrecvd] = '\0';
+		string message(buffer);
+		cout << "Message from client: " << message << endl;
+
+		for (auto client : clients) {
+			if (client != clientSocket) {
+				send(client, message.c_str(), message.length(), 0);
+			}
+			
+		}
+	}
+
+	auto it = find(clients.begin(), clients.end(), clientSocket);
+	if (it != clients.end()) {
+		clients.erase(it);
+	}
+
+	// Close the client socket once communication is done
+	closesocket(clientSocket);
+}
+
 
 int main() {
 	if (!Initialize()) {
@@ -77,31 +124,25 @@ int main() {
 
 	cout << "server has started listning on port : " <<port<< endl;
 
-	//accept
-	SOCKET clientSocket = accept(listenSocket, nullptr, nullptr);
-	if (clientSocket == INVALID_SOCKET) {
-		cout << "invalid client socket!!" << endl;
-		closesocket(listenSocket);
-		WSACleanup();
-		return 1;
+	vector<SOCKET> clients;
+
+	while (1) {
+		//accept
+		SOCKET clientSocket = accept(listenSocket, nullptr, nullptr);
+		if (clientSocket == INVALID_SOCKET) {
+			cout << "invalid client socket!!" << endl;
+			closesocket(listenSocket);
+			WSACleanup();
+			return 1;
+		}
+		clients.push_back(clientSocket);
+
+		thread t1(InteractWithClient, clientSocket, ref(clients));
 	}
 
-	char buffer[4096];
-	int bytesrecvd =  recv(clientSocket, buffer, sizeof(buffer), 0);
-	if (bytesrecvd == SOCKET_ERROR) {
-		cout << "Error in receiving data!!" << endl;
-		closesocket(clientSocket);
-		closesocket(listenSocket);
-		WSACleanup();
-		return 1;
-	}
+	
 
-	buffer[bytesrecvd] = '\0';  // Null-terminate the received data
-
-	string message(buffer);
-	cout << "message from client :" << message << endl;
-
-	closesocket(clientSocket);
+	
 	closesocket(listenSocket);
 
 	WSACleanup();
