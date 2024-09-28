@@ -84,5 +84,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-Your Name - [YourEmail@example.com](mailto:YourEmail@example.com)
+Your Name - [tathagatasau321@gmail.com](mailto:tathagatasau321@gmail.com)
 Project Link: https://github.com/username/repository-name
