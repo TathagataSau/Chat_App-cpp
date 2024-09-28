@@ -85,4 +85,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 
 Your Name - [tathagatasau321@gmail.com](mailto:tathagatasau321@gmail.com)
-Project Link: [https://github.com/username/repository-name](https://github.com/TathagataSau/Chat_App-cpp)
+Project Link: [https://github.com/TathagataSau/Chat_App-cpp](https://github.com/TathagataSau/Chat_App-cpp)
