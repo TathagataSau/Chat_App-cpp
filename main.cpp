@@ -36,7 +36,7 @@ void InteractWithClient(SOCKET clientSocket, vector<SOCKET> &clients) {
 
 		// Error handling
 		if (bytesrecvd == SOCKET_ERROR) {
-			cout << "Error in receiving data!!" << endl;
+			cout << "Error in receiving data!! or Client disconnected!" << endl;
 			break;
 		}
 
@@ -49,7 +49,7 @@ void InteractWithClient(SOCKET clientSocket, vector<SOCKET> &clients) {
 		// Null-terminate the received data and print it
 		buffer[bytesrecvd] = '\0';
 		string message(buffer);
-		cout << "Message from client: " << message << endl;
+		cout << "Message from " << message << endl;
 
 		for (auto client : clients) {
 			if (client != clientSocket) {
@@ -138,6 +138,7 @@ int main() {
 		clients.push_back(clientSocket);
 
 		thread t1(InteractWithClient, clientSocket, ref(clients));
+		t1.detach();
 	}
 
 	
