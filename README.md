@@ -19,7 +19,7 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
     ```bash
-    git clone [https://github.com/username/repository-name.git](https://github.com/TathagataSau/Chat_App-cpp)
+    git clone [https://github.com/TathagataSau/Chat_App-cpp](https://github.com/TathagataSau/Chat_App-cpp)
     ```
 
 2. Open the project in your preferred IDE (e.g., Visual Studio).
