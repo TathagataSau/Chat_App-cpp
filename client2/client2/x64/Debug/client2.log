@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\tatha\source\repos\client2\main.cpp(36,66): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  client2.vcxproj -> C:\Users\tatha\source\repos\client2\x64\Debug\client2.exe
